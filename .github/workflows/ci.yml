@@ -5,6 +5,8 @@ on:
   push:
     branches: ["main"]
   workflow_dispatch:
+  schedule:
+    - cron: "0 10 * * 1-5"
 
 jobs:
   test:
@@ -20,16 +22,24 @@ jobs:
         with:
           distribution: "temurin"
           java-version: "17"
+          cache: "maven"
 
       - name: Setup Chrome
         uses: browser-actions/setup-chrome@v1
 
-      - name: Run smoke suite
+      - name: Run Smoke (PR/push)
+        if: github.event_name != 'schedule'
         env:
           BASE_URL: https://playwright.dev
-          API_BASE_URL: https://reqres.in
           HEADLESS: true
-        run: mvn -q test
+        run: mvn -q test -Dgroups=smoke
+
+      - name: Run Regression (schedule)
+        if: github.event_name == 'schedule'
+        env:
+          BASE_URL: https://playwright.dev
+          HEADLESS: true
+        run: mvn -q test -Dgroups=regression
 
       - name: Upload Surefire reports
         if: always()
@@ -37,4 +47,12 @@ jobs:
         with:
           name: surefire-reports
           path: target/surefire-reports
+          retention-days: 14
+
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots
+          path: target/screenshots
           retention-days: 14
