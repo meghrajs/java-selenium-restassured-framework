@@ -154,11 +154,3 @@ GitHub Actions runs:
 Artifacts uploaded:
 - `target/surefire-reports`
 - `target/screenshots`
-
----
-
-## Roadmap
-- API client wrapper + optional schema validation
-- RetryAnalyzer (CI-only retries)
-- Allure reporting (optional)
-- Dockerized execution for parity with CI
