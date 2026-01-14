@@ -9,8 +9,9 @@ public class HomeTest extends BaseTest {
 
   @Test(groups = {"smoke", "ui"})
   public void homepageLoads() {
-    PlaywrightHomePage home = new PlaywrightHomePage(driver);
+    PlaywrightHomePage home = new PlaywrightHomePage(driver());
     home.open(baseUrl());
-    Assert.assertTrue(driver.getTitle().toLowerCase().contains("playwright"));
+
+    Assert.assertTrue(driver().getTitle().toLowerCase().contains("playwright"));
   }
 }
