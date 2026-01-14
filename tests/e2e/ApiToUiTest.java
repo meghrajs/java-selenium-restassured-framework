@@ -21,9 +21,10 @@ public class ApiToUiTest extends BaseTest {
     String firstName = res.jsonPath().getString("data.first_name");
     Assert.assertNotNull(firstName);
 
-    PlaywrightHomePage home = new PlaywrightHomePage(driver);
+    PlaywrightHomePage home = new PlaywrightHomePage(driver());
     home.open(baseUrl());
     home.clickDocs();
-    Assert.assertTrue(driver.getCurrentUrl().contains("docs"));
+
+    Assert.assertTrue(driver().getCurrentUrl().contains("docs"));
   }
 }
